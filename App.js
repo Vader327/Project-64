@@ -15,6 +15,8 @@ export default class App extends React.Component {
       definition: "",
       isSearchPressed: false,
       isLoading: false,
+      buttonHeight: 9,
+      buttonTop: 0,
     }
   }
 
@@ -45,6 +47,11 @@ export default class App extends React.Component {
     }
   }
 
+  buttonPress=()=>{
+    this.setState({buttonHeight: 3, buttonTop: 6})
+    setTimeout(()=>{this.setState({buttonHeight: 9, buttonTop: 0})}, 500)
+  }
+
   componentDidMount() {
     this.loadFontsAsync();
   }
@@ -63,10 +70,14 @@ export default class App extends React.Component {
         })}}
         style={styles.input} />
         
-        <TouchableHighlight style={styles.submit}
+        <TouchableHighlight style={[styles.submit, {
+          top: this.state.buttonTop,
+          shadowOffset: {width: 0, height: this.state.buttonHeight}}]}
+        underlayColor="#f28c0f" activeOpacity={1}
         onPress={()=>{
           this.setState({isSearchPressed: true});
           this.getWord(this.state.text);
+          this.buttonPress();
         }}>
           <Text style={styles.buttonText}>Search</Text>
         </TouchableHighlight>
@@ -117,6 +128,9 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 20,
     borderRadius: 10,
+    shadowColor: "#d97d0d",
+    shadowOffset: {width: 0, height: 9},
+    shadowRadius: 1,
   },
   buttonText:{
     fontFamily: 'Duru Sans',
